@@ -1,7 +1,7 @@
 package ru.praktikum.ui;
 
-import ru.praktikum.ui.api.TestAccount;
 import io.qameta.allure.Step;
+import org.junit.Before;
 import org.junit.Test;
 import ru.praktikum.ui.pages.ForgotPasswordPage;
 import ru.praktikum.ui.pages.HomePage;
@@ -14,10 +14,15 @@ public class LoginTest extends BaseUiTest {
         super(browser);
     }
 
+    @Before
+    @Step("Создать пользователя перед проверкой входа")
+    public void createLoginUser() {
+        createAccount();
+    }
+
     @Step("Войти тестовым пользователем и проверить успешный вход")
     private void assertLogin(LoginPage page) {
-        TestAccount user = createAccount();
-        assertTrue(page.login(user.email, user.password).isLoggedIn());
+        assertTrue(page.login(account.email, account.password).isLoggedIn());
     }
 
     @Test
