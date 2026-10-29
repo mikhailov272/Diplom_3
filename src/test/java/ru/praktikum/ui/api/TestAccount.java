@@ -1,5 +1,8 @@
-package ru.praktikum.ui;
+package ru.praktikum.ui.api;
 
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.http.HttpStatus.SC_ACCEPTED;
+import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.praktikum.ui.model.LoginRequest;
@@ -39,7 +42,7 @@ public class TestAccount {
         UserRequest user = new UserRequest(email, password, name);
         Response response = request().body(user).post("/api/auth/register");
         token = response.jsonPath().getString("accessToken");
-        response.then().statusCode(200).body("success", equalTo(true));
+        response.then().statusCode(SC_OK).body("success", equalTo(true));
     }
 
     @Step("Проверить сохранение регистрации через вход по API")
@@ -47,7 +50,7 @@ public class TestAccount {
         Response response = request().body(new LoginRequest(email, password))
                 .post("/api/auth/login");
         token = response.jsonPath().getString("accessToken");
-        response.then().statusCode(200).body("success", equalTo(true))
+        response.then().statusCode(SC_OK).body("success", equalTo(true))
                 .body("user.email", equalTo(email));
     }
 
@@ -57,16 +60,16 @@ public class TestAccount {
             // UI registration may have succeeded before a later assertion failed.
             Response response = request().body(new LoginRequest(email, password))
                     .post("/api/auth/login");
-            if (response.statusCode() == 401) {
+            if (response.statusCode() == SC_UNAUTHORIZED) {
                 return;
             }
             token = response.jsonPath().getString("accessToken");
-            response.then().statusCode(200).body("success", equalTo(true));
+            response.then().statusCode(SC_OK).body("success", equalTo(true));
         }
         if (token == null) {
             throw new AssertionError("Нет токена для удаления созданного тестового пользователя");
         }
         request().header("Authorization", token).delete("/api/auth/user")
-                .then().statusCode(202).body("success", equalTo(true));
+                .then().statusCode(SC_ACCEPTED).body("success", equalTo(true));
     }
 }

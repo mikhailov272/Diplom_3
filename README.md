@@ -39,6 +39,8 @@ mvn clean test -Dheadless=true -Dyandex.driver=/path/to/compatible/chromedriver
 тестовых пользователей выполняются через API. На ошибке прикладывается скриншот.
 Тела API-запросов сериализуются из моделей `UserRequest` и `LoginRequest`.
 Методы шагов отмечены `@Step`; для их записи в Allure подключён AspectJ.
+Модели используют Lombok `@Data` и `@AllArgsConstructor`. Класс `TestAccount`
+расположен в пакете `ru.praktikum.ui.api`; HTTP-коды заданы константами `HttpStatus`.
 
 Локаторы полей регистрации и входа проверены на альтернативном стенде.
 В Allure для каждого запуска сохраняются название браузера, фактическая версия
@@ -52,9 +54,7 @@ mvn clean test -Dheadless=true -Dyandex.driver=/path/to/compatible/chromedriver
 
 Окружение: macOS 27.0.1, Java 11.0.31; запуск без видимого окна (`headless=true`).
 
-- Google Chrome 156.0.8078.47 — 2 проверки регистрации; 156.0.8078.48 —
-  остальные 7 проверок после автоматического обновления браузера во время прогона.
-  ChromeDriver 156.0.8078.47.
+- Google Chrome 156.0.8078.48, ChromeDriver 156.0.8078.47.
 - Яндекс Браузер 26.8.3.1016, Chromium 150.0.7871.1016,
   ChromeDriver 150.0.7871.124.
 

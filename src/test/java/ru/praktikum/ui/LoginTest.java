@@ -1,5 +1,6 @@
 package ru.praktikum.ui;
 
+import ru.praktikum.ui.api.TestAccount;
 import io.qameta.allure.Step;
 import org.junit.Test;
 import ru.praktikum.ui.pages.ForgotPasswordPage;

@@ -1,5 +1,6 @@
 package ru.praktikum.ui;
 
+import ru.praktikum.ui.api.TestAccount;
 import io.qameta.allure.Step;
 import io.qameta.allure.Allure;
 import java.io.ByteArrayInputStream;
