@@ -1,5 +1,6 @@
 package ru.praktikum.ui.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,12 +18,14 @@ public class RegisterPage extends BasePage {
         super(driver);
     }
 
+    @Step("Открыть страницу регистрации")
     public RegisterPage open() {
         driver.get(baseUrl + "/register");
         wait.until(ExpectedConditions.visibilityOfElementLocated(heading));
         return this;
     }
 
+    @Step("Заполнить и отправить форму регистрации")
     public void register(String userName, String userEmail, String userPassword) {
         fill(name, userName);
         fill(email, userEmail);
@@ -30,10 +33,12 @@ public class RegisterPage extends BasePage {
         click(register);
     }
 
+    @Step("Проверить отображение ошибки пароля")
     public boolean passwordErrorIsVisible() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(passwordError)).isDisplayed();
     }
 
+    @Step("Перейти ко входу со страницы регистрации")
     public LoginPage goToLogin() {
         click(login);
         return new LoginPage(driver).waitForPage();

@@ -1,5 +1,6 @@
 package ru.praktikum.ui.pages;
 
+import io.qameta.allure.Step;
 import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,10 +18,12 @@ public abstract class BasePage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(Integer.getInteger("ui.timeout.seconds", 15)));
     }
 
+    @Step("Нажать на элемент")
     protected void click(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
+    @Step("Заполнить поле")
     protected void fill(By locator, String value) {
         WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         input.clear();

@@ -1,5 +1,6 @@
 package ru.praktikum.ui.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,30 +16,36 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
+    @Step("Открыть главную страницу")
     public HomePage open() {
         driver.get(baseUrl + "/");
         wait.until(ExpectedConditions.visibilityOfElementLocated(heading));
         return this;
     }
 
+    @Step("Перейти ко входу по кнопке главной страницы")
     public LoginPage loginFromHomeButton() {
         click(loginButton);
         return new LoginPage(driver).waitForPage();
     }
 
+    @Step("Перейти ко входу через личный кабинет")
     public LoginPage loginFromPersonalAccount() {
         click(accountLink);
         return new LoginPage(driver).waitForPage();
     }
 
+    @Step("Проверить отображение кнопки оформления заказа")
     public boolean isLoggedIn() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(orderButton)).isDisplayed();
     }
 
+    @Step("Выбрать раздел конструктора: {category}")
     public void selectCategory(String category) {
         click(categoryTab(category));
     }
 
+    @Step("Проверить выбранный раздел конструктора: {category}")
     public boolean categoryIsSelected(String category) {
         return wait.until(ignored -> {
             WebElement tab = driver.findElement(categoryTab(category));

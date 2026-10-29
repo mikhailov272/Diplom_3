@@ -1,5 +1,6 @@
 package ru.praktikum.ui;
 
+import io.qameta.allure.Step;
 import io.qameta.allure.Allure;
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
@@ -57,6 +58,7 @@ public abstract class BaseUiTest {
     };
 
     @Before
+    @Step("Открыть отдельный браузер для теста")
     public void openFreshBrowser() {
         Allure.parameter("Браузер", browser);
         driver = BrowserFactory.create(browser);
@@ -64,6 +66,7 @@ public abstract class BaseUiTest {
         Allure.parameter("Без видимого окна", Boolean.getBoolean("headless"));
     }
 
+    @Step("Подготовить тестового пользователя")
     protected TestAccount createAccount() {
         account = new TestAccount();
         account.create();
@@ -71,6 +74,7 @@ public abstract class BaseUiTest {
     }
 
     @After
+    @Step("Очистить тестовые данные")
     public void removeTestAccount() {
         if (account != null) {
             account.deleteIfCreated();

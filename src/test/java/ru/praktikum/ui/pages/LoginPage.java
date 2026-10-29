@@ -1,5 +1,6 @@
 package ru.praktikum.ui.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,12 +15,14 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
+    @Step("Дождаться страницы входа")
     public LoginPage waitForPage() {
         wait.until(ExpectedConditions.urlContains("/login"));
         wait.until(ExpectedConditions.visibilityOfElementLocated(heading));
         return this;
     }
 
+    @Step("Войти с указанными данными")
     public HomePage login(String userEmail, String userPassword) {
         fill(email, userEmail);
         fill(password, userPassword);
@@ -29,6 +32,7 @@ public class LoginPage extends BasePage {
         return home;
     }
 
+    @Step("Проверить отображение страницы входа")
     public boolean isOpen() {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(heading)).isDisplayed();
     }

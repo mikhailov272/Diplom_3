@@ -1,8 +1,9 @@
 package ru.praktikum.ui;
 
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import java.util.HashMap;
-import java.util.Map;
+import ru.praktikum.ui.model.LoginRequest;
+import ru.praktikum.ui.model.UserRequest;
 import java.util.UUID;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
@@ -33,28 +34,28 @@ public class TestAccount {
                         .setParam("http.socket.timeout", 10000)));
     }
 
+    @Step("Создать тестового пользователя через API")
     public void create() {
-        Map<String, String> user = new HashMap<>();
-        user.put("email", email);
-        user.put("password", password);
-        user.put("name", name);
+        UserRequest user = new UserRequest(email, password, name);
         Response response = request().body(user).post("/api/auth/register");
         token = response.jsonPath().getString("accessToken");
         response.then().statusCode(200).body("success", equalTo(true));
     }
 
+    @Step("Проверить сохранение регистрации через вход по API")
     public void assertRegistrationSaved() {
-        Response response = request().body(Map.of("email", email, "password", password))
+        Response response = request().body(new LoginRequest(email, password))
                 .post("/api/auth/login");
         token = response.jsonPath().getString("accessToken");
         response.then().statusCode(200).body("success", equalTo(true))
                 .body("user.email", equalTo(email));
     }
 
+    @Step("Удалить созданного тестового пользователя")
     public void deleteIfCreated() {
         if (token == null) {
             // UI registration may have succeeded before a later assertion failed.
-            Response response = request().body(Map.of("email", email, "password", password))
+            Response response = request().body(new LoginRequest(email, password))
                     .post("/api/auth/login");
             if (response.statusCode() == 401) {
                 return;
